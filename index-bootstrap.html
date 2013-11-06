@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bootstrap Example using Behance API">
+  <meta name="author" content="Adrian Hanft">
+  <!-- <link rel="shortcut icon" href="../../assets/ico/favicon.png"> -->
+
+  <title>Bootstrap Example of Behance API Template</title>
+
+  <link href="style.css" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="extras/html5shiv.js"></script>
+  <script src="extras/respond.min.js"></script>
+  <![endif]-->
+
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <style type="text/css" media="screen">
+  h2 {
+   color: #333;
+ }
+
+ /* This overrides the default popup behavior so it doesn't slide in from the top*/
+ .modal.fade .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+/* This fixes the shift that happens when the modal window is popped.*/
+body, .navbar-fixed-top, .navbar-fixed-bottom {
+  margin-right: 0 !important;
+}
+
+</style>
+
+</head>
+
+<body>
+	<!-- Wrap all page content here --> 
+	<div id="wrap">
+
+		<!-- Fixed navbar -->
+		<div class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="home navbar-brand" href="#"><span class="glyphicon glyphicon-flash"></span> Behance Demo</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Elsewhere <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="http://adrian3.com">Blog</a></li>
+								<li><a href="http://foundphotography.com">Photo Blog</a></li>
+								<li><a href="http://profiles.wordpress.org/adrian3/">Wordpress Plugins</a></li>
+								<li class="divider"></li>
+								<li class="dropdown-header">Follow Adrian</li>
+								<li><a href="http://instagram.com/ade3">Instagram</a></li>
+								<li><a href="http://www.flickr.com/photos/foundphotography/">Flickr</a></li>
+								<li><a href="http://dribbble.com/adrian3">Dribbble</a></li>
+								<li><a href="http://www.linkedin.com/in/adrianhanft">LinkedIn</a></li>
+								<li><a href="http://www.last.fm/user/adrianhanft/">LastFM</a></li>
+								<li><a href="https://twitter.com/ade3">Twitter</a></li>
+								<li><a href="https://vimeo.com/ade3">Vimeo</a></li>                
+							</ul>
+						</li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+
+		<!-- Begin page content -->
+		<div class="container">
+			<div class="content">
+
+				<div id="projects2"></div>
+
+				<div id="projects"></div>
+
+			</div><!-- end content -->
+		</div>
+	</div>
+
+	<div id="footer">
+		<div class="container">
+			<p class="text-muted credit"><a href="https://twitter.com/ade3">Twitter</a> | <a href="http://instagram.com/ade3">Instagram</a> | <a href="http://dribbble.com/adrian3">Dribbble</a></p>
+		</div>
+	</div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          <div class="modal-description"></div>
+          <div class="modal-work"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/behance.js"></script>
+
+        <script type="text/javascript">
+        function loadProject(projectID) {
+        	behanceAPI.getProjectDetails(projectID, function(loadModules) {
+
+		// console.dir(loadModules);
+		var moduleHTML = "";
+
+    var moduleTitle = "";
+    moduleTitle += "<h1>" + loadModules.name + "</h1>";
+    $("#myModalLabel").html(moduleTitle);
+
+    var moduleDescription = "";
+    moduleDescription += "<p>" + loadModules.description + "</p>";
+    $(".modal-description").html(moduleDescription);
+
+		for(var i=0; i<loadModules.modules.length; i++) {
+			if(loadModules.modules[i].src!=undefined) {
+				moduleHTML += "<p><img class='img-responsive' src='" + loadModules.modules[i].src + "'>";
+				moduleHTML += "</p>";
+			}
+		}
+		// $("#projects2").html(moduleHTML);
+		$(".modal-work").html(moduleHTML);
+		$('#myModal').modal('show');
+	});
+        }
+
+        $(document).ready(function() {
+
+	// Set behance api key
+	behanceAPI.setKey(behancekey);
+	
+	// Get projects
+	behanceAPI.getProjects("adrian3", function(projectlist) {
+
+		// console.dir(projectlist);
+		var projectHTML = "";
+		for(var i=0; i<projectlist.length; i++) {
+			var project = projectlist[i];
+			// projectHTML += "<h2>" + project.name + "</h2>";
+			projectHTML += "<a href='#' onclick='loadProject(" + project.id + ")'><img class='coverimage' src='" + project.covers[202] + "'></a>";
+		}
+		$("#projects").html(projectHTML);
+	});
+});
+        </script>
+      </body>
+      </html>

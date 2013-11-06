@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Simple Example of Behance API">
+	<meta name="author" content="Adrian Hanft">
+
+	<title>Simple Example of Behance API Template</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <style type="text/css" media="screen">
+  body {
+    margin: 0;
+    font-family: 'Vollkorn', serif;
+    color: #666;
+  }
+  a {
+    color: #666;
+  }
+  li {
+    list-style-type: none;
+  }
+  li, h1 {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+  }
+  #header {
+    float: left;
+    width: 100%;
+    background-color: #ccc;
+  }
+  #left-column {
+    float: left;
+    width: 33%;
+  }
+  #right-column {
+    float: right;
+    background-color: #efefef;
+    width: 66%;
+  }
+  .projects, .modules {
+    padding:0 25px 0 25px;
+  }
+  .module-description, .module-title {
+    padding: 0 0 0 25px;
+  }
+  #left-column h1, #header h1  {
+    padding: 10px 25px;
+  }
+  </style>
+
+</head>
+
+<body>
+  <div id="header"><h1>Behance API</h1></div>
+  <div id="left-column">
+    <h1>Projects:</h1>
+    <ul>
+      <div class="projects"></div>
+    </ul>
+  </div>
+  <div id="right-column">
+    <div class="module-title"><h1>Simple template sample using the Behance API</h1></div>
+    <div class="module-description"></div>
+    <div class="modules">
+      <p>Click the links on the left to load the project module here.</p>
+      <p>To customize this example you need to modify two things. First, add your Behance API key to the first line of the behance.js file. Second, change the username to the username you want to load projects for. This is found in this file (simple.html) where it says <em>var username = "adrian3"</em>.</p>
+      <p>If you want to see project thumbnail images on the right uncomment the line at the bottom of this file.</p>
+      <p>More info about the Behance API can be found at <a href="http://www.behance.net/dev">http://www.behance.net/dev</a>.</p>
+      <p>If you found this template useful, send thanks to Adrian Hanft. Links of credit, tweets, and donations are appreciated.</p>
+    </div>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="js/behance.js"></script>
+
+  <script type="text/javascript">
+  var username = "adrian3";
+
+  function loadProject(projectID) {
+   behanceAPI.getProjectDetails(projectID, function(loadModules) {
+    var moduleHTML = "";
+
+    var moduleTitle = "";
+    moduleTitle += "<h1>" + loadModules.name + "</h1>";
+    $(".module-title").html(moduleTitle);
+
+    var moduleDescription = "";
+    moduleDescription += "<p>" + loadModules.description + "</p>";
+    $(".module-description").html(moduleDescription);
+
+    for(var i=0; i<loadModules.modules.length; i++) {
+     if(loadModules.modules[i].src!=undefined) {
+      moduleHTML += "<p><img src='" + loadModules.modules[i].src + "'></p>";
+    }
+  }
+  $(".modules").html(moduleHTML);
+});
+ }
+
+ $(document).ready(function() {
+	// Set behance api key
+	behanceAPI.setKey(behancekey);
+	
+	// Get projects
+	behanceAPI.getProjects("adrian3", function(projectlist) {
+		var projectHTML = "";
+		for(var i=0; i<projectlist.length; i++) {
+			var project = projectlist[i];
+      projectHTML += "<li><a href='#' onclick='loadProject(" + project.id + ")'>" + project.name + "</a></li>";
+      // if you would like to see project thumbnails use this:
+      // projectHTML += "<a href='#' onclick='loadProject(" + project.id + ")'><img src='" + project.covers[202] + "'></a>";
+    }
+    $(".projects").html(projectHTML);
+  });
+});
+ </script>
+</body>
+</html>
