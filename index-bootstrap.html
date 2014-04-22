@@ -43,6 +43,10 @@ body, .navbar-fixed-top, .navbar-fixed-bottom {
   margin-right: 0 !important;
 }
 
+#projects a > img {
+	width: 100%;
+}
+
 </style>
 
 </head>
@@ -129,58 +133,12 @@ body, .navbar-fixed-top, .navbar-fixed-bottom {
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/behance.js"></script>
-
-        <script type="text/javascript">
-        function loadProject(projectID) {
-        	behanceAPI.getProjectDetails(projectID, function(loadModules) {
-
-		// console.dir(loadModules);
-		var moduleHTML = "";
-
-    var moduleTitle = "";
-    moduleTitle += "<h1>" + loadModules.name + "</h1>";
-    $("#myModalLabel").html(moduleTitle);
-
-    var moduleDescription = "";
-    moduleDescription += "<p>" + loadModules.description + "</p>";
-    $(".modal-description").html(moduleDescription);
-
-		for(var i=0; i<loadModules.modules.length; i++) {
-			if(loadModules.modules[i].src!=undefined) {
-				moduleHTML += "<p><img class='img-responsive' src='" + loadModules.modules[i].src + "'>";
-				moduleHTML += "</p>";
-			}
-		}
-		// $("#projects2").html(moduleHTML);
-		$(".modal-work").html(moduleHTML);
-		$('#myModal').modal('show');
-	});
-        }
-
-        $(document).ready(function() {
-
-	// Set behance api key
-	behanceAPI.setKey(behancekey);
-	
-	// Get projects
-	behanceAPI.getProjects("adrian3", function(projectlist) {
-
-		// console.dir(projectlist);
-		var projectHTML = "";
-		for(var i=0; i<projectlist.length; i++) {
-			var project = projectlist[i];
-			// projectHTML += "<h2>" + project.name + "</h2>";
-			projectHTML += "<a href='#' onclick='loadProject(" + project.id + ")'><img class='coverimage' src='" + project.covers[202] + "'></a>";
-		}
-		$("#projects").html(projectHTML);
-	});
-});
-        </script>
-      </body>
-      </html>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/behance.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
